@@ -1,0 +1,39 @@
+{
+  "name": "hw-app-incognito",
+  "version": "0.1.0",
+  "description": "Ledger Hardware Wallet Incognito Application Integration",
+  "keywords": [
+    "Incognito Network",
+    "Privacy",
+    "LedgerWallet",
+    "NanoS",
+    "Hardware Wallet"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TBD/tbd.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/index.js",
+  "module": "lib-es/index.js",
+  "types": "lib/index.d.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@ledgerhq/hw-transport": "^6.27.8",
+    "@ledgerhq/hw-transport-http": "^6.27.8",
+    "@ledgerhq/hw-transport-webhid": "^6.27.8",
+    "@types/node": "^18.11.11"
+  },
+  "scripts": {
+    "clean": "rimraf lib lib-es",
+    "build": "tsc && tsc -m ES6 --outDir lib-es",
+    "prewatch": "pnpm build",
+    "watch": "tsc --watch",
+    "doc": "documentation readme src/** --section=API --pe ts --re ts --re d.ts",
+    "lint": "eslint ./src --no-error-on-unmatched-pattern --ext .ts,.tsx",
+    "lint:fix": "pnpm lint --fix",
+    "test": "jest"
+  }
+}
