@@ -23,6 +23,7 @@
   "dependencies": {
     "@ledgerhq/hw-transport": "^6.27.8",
     "@ledgerhq/hw-transport-http": "^6.27.8",
+    "@ledgerhq/hw-transport-node-hid": "^6.27.8",
     "@ledgerhq/hw-transport-webhid": "^6.27.8",
     "@types/node": "^18.11.11"
   },
