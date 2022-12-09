@@ -1,10 +1,11 @@
 import type Transport from "@ledgerhq/hw-transport";
 import { cmd } from "./constants";
-import {transcode} from "buffer";
 
 export async function getAddress(transport: Transport) {
     let buf =  Buffer.from([]);
-    return transport.send(cmd.cla, cmd.GetAddress, 0x00, 0x00, buf);
+    const res = await transport.send(cmd.cla, cmd.GetAddress, 0x00, 0x00, buf);
+
+    return res.subarray(0, res.indexOf(0)).toString('ascii').trimEnd();
 }
 
 export  async  function getOTAKey(transport: Transport) {

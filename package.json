@@ -25,7 +25,8 @@
     "@ledgerhq/hw-transport-http": "^6.27.8",
     "@ledgerhq/hw-transport-node-hid": "^6.27.8",
     "@ledgerhq/hw-transport-webhid": "^6.27.8",
-    "@types/node": "^18.11.11"
+    "@types/node": "^18.11.11",
+    "base58check": "^2.0.0"
   },
   "scripts": {
     "clean": "rimraf lib lib-es",
