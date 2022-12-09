@@ -6,7 +6,7 @@ Quick and dirty code to exchange APDUs between Ledger Live Speculos APDU server.
 Usage example:
 
   export DEBUG_COMM_HTTP_PROXY='http://127.0.0.1:9998'
-  ledger-live getAddress -c btc --path "m/49'/0'/0'/0/0" --derivationMode segwit
+  ledger-live getAccount -c btc --path "m/49'/0'/0'/0/0" --derivationMode segwit
 '''
 
 import argparse
