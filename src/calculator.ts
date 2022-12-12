@@ -1,6 +1,5 @@
 import type Transport from "@ledgerhq/hw-transport";
 import { cmd } from "./constants";
-import { transcode } from "buffer";
 
 
 export async function genAlpha(transport: Transport, alphaLen: number) {
