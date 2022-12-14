@@ -21,60 +21,61 @@ export async function calculateKeyImage(transport: Transport, encryptKmB64: stri
 
 
 export async function calculateFirstC(transport: Transport, params: string[]) {
-    const pedComG = Buffer.from(params[params.length - 1])
+    const pedComG = Buffer.from(params[params.length - 1], "base64")
     try {
-        for (let i = 0; i < params.length - 2; i++) {
-            const h = Buffer.from(params[i])
+        let result = [];
+        for (let i = 0; i < params.length - 1; i++) {
+            const h = Buffer.from(params[i], "base64")
             let buf = Buffer.alloc(params[i].length + pedComG.length)
             h.copy(buf, 0, h.length)
             pedComG.copy(buf, h.length, pedComG.length)
             const msg = await transport.send(cmd.cla, cmd.CalculateC, 0x00, i, buf)
-            console.log(msg)
+            result.push(msg.subarray(0, 64));
         }
-        let buf = Buffer.from(params[params.length - 1])
+        let buf = Buffer.from(params[params.length - 1], "base64")
         const msg = await transport.send(cmd.cla, cmd.CalculateC, 0x01, params.length - 1, buf)
-        console.log(msg)
+        result.push(msg.subarray(0, 32));
+        return Buffer.concat(result);
     }
     catch (err) {
-        console.log(err)
+        console.error(err)
     }
 }
 
 export async function calculateR(transport: Transport, coinLen: number, cPi: string) {
-    const buf = Buffer.from(cPi)
+    const buf = Buffer.from(cPi, "base64")
     try {
         for (let i = 0; i < coinLen; i++) {
             const msg = await transport.send(cmd.cla, cmd.CalculateR, 0x00, i, buf)
-            console.log(msg)
+            return msg
         }
     }
     catch (err) {
-        console.log(err)
+        console.error(err)
     }
 }
 
 export async function calculateCoinPrivKey(transport: Transport, coinsH: string[]) {
 
     for (let i = 0; i < coinsH.length - 1; i++) {
-        let buf = Buffer.from(coinsH[i])
+        let buf = Buffer.from(coinsH[i], "base64")
         const msg = await transport.send(cmd.cla, cmd.GenCoinPrivateKey, 0x00, i, buf)
-        console.log(msg)
     }
-    let buf = Buffer.from(coinsH[coinsH.length - 1])
+    let buf = Buffer.from(coinsH[coinsH.length - 1], "base64")
     const msg = await transport.send(cmd.cla, cmd.GenCoinPrivateKey, 0x01, coinsH.length - 1, buf)
-    console.log(msg)
+    return msg
 }
 
 export async function signSchnorr(transport: Transport, pedRand: string, pedPriv: string, randomness: string, message: string) {
     let pRand;
-    const pPriv = Buffer.from(pedPriv)
-    const rand = Buffer.from(randomness)
-    const msg = Buffer.from(message)
+    const pPriv = Buffer.from(pedPriv, "base64")
+    const rand = Buffer.from(randomness, "base64")
+    const msg = Buffer.from(message, "base64")
     if (pedRand.length == 0) {
         pRand = Buffer.alloc(32);
         pRand = Buffer.from([])
     } else {
-        pRand = Buffer.from(pedRand)
+        pRand = Buffer.from(pedRand, "base64")
     }
     let buf = Buffer.alloc(pRand.length + pPriv.length + rand.length + msg.length)
     pRand.copy(buf, 0, pRand.length)
@@ -84,9 +85,9 @@ export async function signSchnorr(transport: Transport, pedRand: string, pedPriv
 
     try {
         const res = await transport.send(cmd.cla, cmd.SignSchnorr, 0x00, 0x00, buf)
-        console.log(res)
+        return res
     }
     catch (err) {
-        console.log(err)
+        console.error(err)
     }
 }
