@@ -7,6 +7,14 @@ export async function genAlpha(transport: Transport, alphaLen: number) {
     return transport.send(cmd.cla, cmd.GenAlpha, alphaLen, 0x00, buf);
 }
 
+export async function setAlpha(transport: Transport, alphaLen: number, data: string[]) {
+    for (let i = 0; i < alphaLen; i ++) {
+        const buf = Buffer.from(data[i])
+        const res = await transport.send(cmd.cla, cmd.SetAlpha, i, 0x00, buf)
+        console.log(res)
+    }
+}
+
 export async function calculateKeyImage(transport: Transport, encryptKmB64: string, coinPubKeyB64: string) {
     const coinPubKey = Buffer.from(coinPubKeyB64, "base64")
     const coinEncryptKm = Buffer.from(encryptKmB64, "base64")
