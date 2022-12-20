@@ -29,7 +29,8 @@ export async function calculateKeyImage(transport: Transport, encryptKmB64: stri
     
     coinEncryptKm.copy(buffer, 0);
     coinPubKey.copy(buffer, 32);
-    return transport.send(cmd.cla, cmd.KeyImage, 0x00, 0x00, buffer);
+    const res = await transport.send(cmd.cla, cmd.KeyImage, 0x00, 0x00, buffer);
+    return res.subarray(0, 32);
 }
 
 
