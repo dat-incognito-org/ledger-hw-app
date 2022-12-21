@@ -12,10 +12,10 @@ export async function setAlpha(transport: Transport, index: number, data: string
     return await transport.send(cmd.cla, cmd.SetAlpha, index, 0x00, buf)
 }
 
-export async function getAlpha(transport: Transport, alphaLen: number, data: string[]) {
+export async function getAlpha(transport: Transport, alphaLen: number) {
     const buf = Buffer.from([])
     for (let i = 0; i < alphaLen; i++) {
-        const res = await  transport.send(cmd.cla, cmd.GetAlpha, i, 0x00, buf)
+        const res = await transport.send(cmd.cla, cmd.GetAlpha, i, 0x00, buf)
         console.log(res)
     }
 }
